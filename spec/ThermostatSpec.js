@@ -1,5 +1,6 @@
 describe("Thermostat", function() {
   var testThermostat;
+  var minTemp = 10;
 
   beforeEach(function(){
     testThermostat = new Thermostat();
@@ -29,6 +30,16 @@ describe("Thermostat", function() {
   describe("#adjustPowerSave", function() {
     it("switches power save mode on and off", function() {
       expect(testThermostat.adjustPowerSave()).toBeTrue();
+    });
+  });
+
+  describe("#downTemp", function() {
+    it("You can decrease the temperature with a down function", function() {
+      expect(testThermostat.downTemp(1)).toEqual(19);
+    });
+    it("has a minimum temperature of 10 degrees", function() {
+      expect(testThermostat.downTemp(11)).toEqual(`Temperature cannot go below ${minTemp} degrees, it has been adjusted to 10 degrees!`)
+      expect(testThermostat.current_setting()).toEqual(10);
     });
   });
 
