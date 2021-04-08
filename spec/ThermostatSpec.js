@@ -18,18 +18,21 @@ describe("Thermostat", function() {
     });
 
     it("cannot increase the temperature above 32 degrees", function() {
+      testThermostat.adjustPowerSave()
       expect(testThermostat.upTemp(13)).toEqual("Temperature cannot exceed 32 degrees, it has not been increased.");
     });
 
     it("If power saving mode is on, the maximum temperature is 25 degrees", function() {
-      testThermostat.adjustPowerSave()
       expect(testThermostat.upTemp(13)).toEqual("Temperature cannot exceed 25 degrees, it has not been increased.");
     });
   });
 
   describe("#adjustPowerSave", function() {
     it("switches power save mode on and off", function() {
-      expect(testThermostat.adjustPowerSave()).toBeTrue();
+      expect(testThermostat.adjustPowerSave()).toBeFalse();
+    });
+    it("expects power save mode to be on by default", function() {
+      expect(testThermostat.powerSave).toBeTrue();
     });
   });
 
@@ -43,4 +46,27 @@ describe("Thermostat", function() {
     });
   });
 
+  describe("#resetTemp", function() {
+    it("resets the temp to 20", function() {
+      testThermostat.resetTemp();
+      expect(testThermostat.current_setting()).toEqual(20);
+    });
+  });
+  
+  describe("#energyUsage", function() { 
+    it("expects thermostat energy usage to be medium", function() {
+      expect(testThermostat.energyUsage()).toEqual("Medium")
+    });
+
+    it("returns Low energy, if temp is below 18", function() {
+      testThermostat.downTemp(11);
+      expect(testThermostat.energyUsage()).toEqual("Low")
+    });
+
+    it("returns High energy, if temp is above 25", function() {
+      testThermostat.adjustPowerSave();
+      testThermostat.upTemp(10);
+      expect(testThermostat.energyUsage()).toEqual("High")
+    });
+  });
 });

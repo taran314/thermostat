@@ -1,9 +1,9 @@
 class Thermostat {
   constructor() {
     this.temperature = 20;
-    this.maximum_temperature = 32
+    this.maximum_temperature = 25
     this.minimum_temperature = 10
-    this.powerSave = false
+    this.powerSave = true
   };
 
   current_setting() {
@@ -12,6 +12,7 @@ class Thermostat {
 
   upTemp(amount) {
     if (this.temperature + amount > this.maximum_temperature) {
+      this.temperature = this.maximum_temperature;
       return `Temperature cannot exceed ${this.maximum_temperature} degrees, it has not been increased.`;
     } else {
       return this.temperature += amount; }
@@ -35,5 +36,19 @@ class Thermostat {
       this.maximum_temperature = 25
     }
     return this.powerSave
-  }
+  };
+
+  resetTemp() {
+    this.temperature = 20;
+  };
+
+  energyUsage() {
+    if (this.temperature < 18) {
+      return "Low";
+    } else if (this.temperature < 26) {
+      return "Medium";
+    } else {
+      return "High";
+    }
+  };
 };
