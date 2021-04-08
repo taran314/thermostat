@@ -13,7 +13,7 @@ class Thermostat {
   upTemp(amount) {
     if (this.temperature + amount > this.maximum_temperature) {
       this.temperature = this.maximum_temperature;
-      return `Temperature cannot exceed ${this.maximum_temperature} degrees, it has not been increased.`;
+      return `Temperature cannot exceed ${this.maximum_temperature} degrees, it has been adjusted to ${this.maximum_temperature}.`;
     } else {
       return this.temperature += amount; }
   };
@@ -34,6 +34,9 @@ class Thermostat {
     } else {
       this.powerSave = true
       this.maximum_temperature = 25
+    }
+    if (this.temperature > this.maximum_temperature) {
+      this.temperature = this.maximum_temperature;
     }
     return this.powerSave
   };
