@@ -1,14 +1,36 @@
 $(document).ready(function() {
   var thermostat;
   thermostat = new Thermostat();
-
+  CityTemp()
   // let elementsArray = document.querySelectorAll("button");
-  // console.log(elementsArray);
   // elementsArray.forEach(function(elem) {
   //   elem.addEventListener("click", function() {
   //     $("#current_setting").text(thermostat.current_setting());
   //   });
   // });
+  
+  // appid should be stored in an Env variable - SENSITIVE DATA!!! 
+  function CityTemp(name = "London") {  
+    $.ajax({
+        url: "https://api.openweathermap.org/data/2.5/weather",
+        data: {
+          'q' : `${name}`,
+          'units' : 'metric',
+          'appid' : '23738962f475494b1af4f1d87c114a52',
+        },
+        type: "GET",
+        dataType: "json",
+      })
+      .done(function( json ) {
+        $( "<h2>" ).text( `${json.name}, ${json.sys.country} : ${json.main.temp}°C` ).appendTo( "body" );
+        console.log(json)
+    });
+  };
+
+  $( "#city-input" ).submit(function( event ) {
+    event.preventDefault();
+    CityTemp($( "#city" ).val());
+  });
 
   function UpdateTemp() {
     $("#current_setting").text(thermostat.current_setting());
